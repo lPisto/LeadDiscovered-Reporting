@@ -222,4 +222,7 @@ if (require.main === module) {
   app.listen(port, () => console.log(`App running on ${port}`));
 }
 
+app.get("/ping", (req, res) => res.json({ status: "ok" }));
+
+
 module.exports = app; 

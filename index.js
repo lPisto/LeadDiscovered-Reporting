@@ -132,97 +132,91 @@ app.post("/webhook/opportunity", async (req, res) => {
 });
 
 
-// async function runSelenium() {
-//   return new Promise((resolve, reject) => {
-//     const py = spawn("python", ["./scripts/reporting.py"]);
+async function runSelenium() {
+  return new Promise((resolve, reject) => {
+    const py = spawn("python", ["./scripts/reporting.py"]);
 
-//     py.stdout.on("data", (data) => console.log(`PYTHON STDOUT: ${data}`));
-//     py.stderr.on("data", (data) => console.error(`PYTHON STDERR: ${data}`));
+    py.stdout.on("data", (data) => console.log(`PYTHON STDOUT: ${data}`));
+    py.stderr.on("data", (data) => console.error(`PYTHON STDERR: ${data}`));
 
-//     py.on("close", (code) => {
-//       if (code === 0) {
-//         console.log("✅ Report generated");
-//         resolve();
-//       } else {
-//         reject("Error executing Selenium");
-//       }
-//     });
-//   });
-// }
-
-
-// async function sendReport() {
-//   try {
-//     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-//       throw new Error(
-//         "SMTP credentials not found. Make sure SMTP_USER and SMTP_PASS are defined in your .env file"
-//       );
-//     }
-
-//     const statsRaw = await fs.readFile("./reports/callingStats.txt", "utf-8");
-//     const statsLines = statsRaw.trim().split('\n');
-//     const statsHtml = statsLines.map(line => `<p style="margin: 0 15px; font-size: 16px; color: #333;">${line.replace(":", ": ")}</p>`).join('');
-
-//     const funnelPngBuffer = await sharp("./reports/funnel.svg").png().toBuffer();
-
-//     const htmlBody = `
-//       <body style="background-color: #ffffff; font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px;">
-//         <h1 style="color: #333; margin-bottom: 40px;">Weekly Report</h1>
-        
-//         <div style="margin-bottom: 50px;">
-//           <h2 style="color: #444;">Calling Report</h2>
-//           <div style="display: inline-flex; justify-content: center; align-items: center; margin-bottom: 30px; padding: 20px; background-color: #f8f8f8; border-radius: 8px;">
-//             ${statsHtml}
-//           </div>
-//           <img src="cid:callingReportImage" alt="Calling Report" style="max-width: 90%; height: auto; border: 1px solid #ddd; border-radius: 8px; display: block; margin: 0 auto;"/>
-//         </div>
-
-//         <div>
-//           <h2 style="color: #444;">Funnel General Contractors</h2>
-//           <img src="cid:funnelImage" alt="Funnel" style="max-width: 90%; height: auto; border: 1px solid #ddd; border-radius: 8px; display: block; margin: 0 auto;"/>
-//         </div>
-//       </body>
-//     `;
-
-//     let transporter = nodemailer.createTransport({
-//       host: "smtp.gmail.com",
-//       port: 465,
-//       secure: true,
-//       auth: {
-//         user: process.env.EMAIL_USER,
-//         pass: process.env.EMAIL_PASS,
-//       },
-//     });
-
-//     await transporter.sendMail({
-//       from: '"Automatic Report" <pistolesilucas@gmail.com>',
-//       to: "daryl@n-hanceconsulting.com",
-//       subject: "📊 Weekly Report",
-//       html: htmlBody,
-//       attachments: [
-//         { filename: "callingReport.png", path: "./reports/callingReport.png", cid: "callingReportImage" },
-//         { filename: "funnel.png", content: funnelPngBuffer, cid: "funnelImage" },
-//       ],
-//     });
-
-//     console.log("📨 Email sent successfully");
-//   } catch (error) {
-//     console.error("Error sending report:", error);
-//   }
-// }
-
-// cron.schedule("00 18 * * 5", async () => {
-//   console.log("⏰ Running weekly report...");
-//   await runSelenium();
-//   await sendReport();
-// });
-
-if (require.main === module) {
-  const port = process.env.PORT || 3000;
-  app.listen(port, () => console.log(`App running on ${port}`));
+    py.on("close", (code) => {
+      if (code === 0) {
+        console.log("✅ Report generated");
+        resolve();
+      } else {
+        reject("Error executing Selenium");
+      }
+    });
+  });
 }
 
-app.get("/ping", (req, res) => res.json({ status: "ok" }));
 
+async function sendReport() {
+  try {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      throw new Error(
+        "SMTP credentials not found. Make sure SMTP_USER and SMTP_PASS are defined in your .env file"
+      );
+    }
 
-module.exports = app; 
+    const statsRaw = await fs.readFile("./reports/callingStats.txt", "utf-8");
+    const statsLines = statsRaw.trim().split('\n');
+    const statsHtml = statsLines.map(line => `<p style="margin: 0 15px; font-size: 16px; color: #333;">${line.replace(":", ": ")}</p>`).join('');
+
+    const funnelPngBuffer = await sharp("./reports/funnel.svg").png().toBuffer();
+
+    const htmlBody = `
+      <body style="background-color: #ffffff; font-family: Arial, sans-serif; text-align: center; margin: 0; padding: 20px;">
+        <h1 style="color: #333; margin-bottom: 40px;">Weekly Report</h1>
+        
+        <div style="margin-bottom: 50px;">
+          <h2 style="color: #444;">Calling Report</h2>
+          <div style="display: inline-flex; justify-content: center; align-items: center; margin-bottom: 30px; padding: 20px; background-color: #f8f8f8; border-radius: 8px;">
+            ${statsHtml}
+          </div>
+          <img src="cid:callingReportImage" alt="Calling Report" style="max-width: 90%; height: auto; border: 1px solid #ddd; border-radius: 8px; display: block; margin: 0 auto;"/>
+        </div>
+
+        <div>
+          <h2 style="color: #444;">Funnel General Contractors</h2>
+          <img src="cid:funnelImage" alt="Funnel" style="max-width: 90%; height: auto; border: 1px solid #ddd; border-radius: 8px; display: block; margin: 0 auto;"/>
+        </div>
+      </body>
+    `;
+
+    let transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    await transporter.sendMail({
+      from: '"Automatic Report" <pistolesilucas@gmail.com>',
+      to: "daryl@n-hanceconsulting.com",
+      subject: "📊 Weekly Report",
+      html: htmlBody,
+      attachments: [
+        { filename: "callingReport.png", path: "./reports/callingReport.png", cid: "callingReportImage" },
+        { filename: "funnel.png", content: funnelPngBuffer, cid: "funnelImage" },
+      ],
+    });
+
+    console.log("📨 Email sent successfully");
+  } catch (error) {
+    console.error("Error sending report:", error);
+  }
+}
+
+cron.schedule("00 18 * * 5", async () => {
+  console.log("⏰ Running weekly report...");
+  await runSelenium();
+  await sendReport();
+});
+
+app.listen(process.env.PORT, () =>
+  console.log(`🚀 Backend running on http://localhost:${process.env.PORT}`)
+);

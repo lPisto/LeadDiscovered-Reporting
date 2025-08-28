@@ -1,0 +1,35 @@
+{
+  contact_id: 'OfRIvpRBdZyva5Z8flzr',
+  first_name: 'Gary',
+  last_name: 'Cheema',
+  full_name: 'Gary Cheema',
+  email: 'gary.cheema@sbw.ca',
+  phone: '+16042303449',
+  tags: 'general contractor',
+  country: 'CA',
+  date_created: '2025-05-28T20:00:03.286Z',
+  company_name: 'Smith Bros & Wilson (BC) Ltd',
+  full_address: '',
+  contact_type: 'lead',
+  location: {
+    name: 'High Crest Architectural Products Inc.',
+    address: '3292 Production Way #501',
+    city: 'Burnaby',
+    state: 'British Columbia',
+    country: 'CA',
+    postalCode: 'V5A 4W4',
+    fullAddress: '3292 Production Way #501, Burnaby British Columbia V5A 4W4',
+    id: 'StmfWqkpBNpd2G8iSTmB'
+  },
+  workflow: {
+    id: 'ad067b31-86ce-4b44-ac7e-6437465beeb8',
+    name: 'TEST: Notify Sales on Qualified Lead'
+  },
+  triggerData: {},
+  contact: {
+    attributionSource: { sessionSource: 'CRM UI', medium: 'csv_import', mediumId: null },
+    lastAttributionSource: {}
+  },
+  attributionSource: {},
+  customData: { contactId: 'OfRIvpRBdZyva5Z8flzr' }
+}

@@ -1,0 +1,6 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/USERNAME/nodeapps/miapp
+    - /bin/cp -R * $DEPLOYPATH
+    - cd $DEPLOYPATH && npm install --production
+

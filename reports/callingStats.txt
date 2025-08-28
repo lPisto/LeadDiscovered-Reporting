@@ -1,0 +1,5 @@
+Avg. call duration:
+23s
+|
+Total call duration:
+43m 23s

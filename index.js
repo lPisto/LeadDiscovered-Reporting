@@ -217,6 +217,7 @@ cron.schedule("00 18 * * 5", async () => {
   await sendReport();
 });
 
-app.listen(process.env.PORT, () =>
-  console.log(`🚀 Backend running on http://localhost:${process.env.PORT}`)
-);
+app.get("/", (req, res) => res.send("🚀 Backend funcionando!"));
+
+const port = process.env.PORT || 3000; // Render asignará PORT automáticamente
+app.listen(port, () => console.log(`App corriendo en puerto ${port}`));
